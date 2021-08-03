@@ -1,9 +1,9 @@
 import { 
-  Ionicons, 
-  Entypo, 
+  AntDesign, 
   EvilIcons, 
   MaterialIcons, 
-  FontAwesome5 
+  FontAwesome5,
+  Foundation 
 } from '@expo/vector-icons';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
@@ -11,8 +11,10 @@ import * as React from 'react';
 
 import Colors from '../constants/Colors';
 import useColorScheme from '../hooks/useColorScheme';
-import TabOneScreen from '../screens/TabOneScreen';
-import TabTwoScreen from '../screens/TabTwoScreen';
+import Home from '../screens/Home';
+import Search from '../screens/Search';
+import Library from '../screens/Library';
+import AlbumScreen from '../screens/AlbumScreen';
 import { TabOneParamList, TabTwoParamList } from '../types';
 
 const BottomTab = createBottomTabNavigator();
@@ -21,43 +23,41 @@ export default function BottomTabNavigator() {
   const colorScheme = useColorScheme();
 
   return (
+    
+
     <BottomTab.Navigator
       initialRouteName="TabOne"
-      tabBarOptions={{ activeTintColor: Colors[colorScheme].tint }}>
+      tabBarOptions={{ activeTintColor: Colors[colorScheme].tint, style: { backgroundColor: '#191414'} }}>
       <BottomTab.Screen
         name="Home"
         component={TabOneNavigator}
         options={{
-          tabBarIcon: ({ color }) => <Entypo name="home" size={30} style={{ marginBottom: -3 }} color={color} />,
+          tabBarIcon: ({ color }) => <Foundation name="home" size={28} color={color} />,
         }}
       />
       <BottomTab.Screen
         name="Search"
         component={TabTwoNavigator}
         options={{
-          tabBarIcon: ({ color }) => <EvilIcons name="search" color={color} size={30} style={{ marginBottom: -3 }} />,
+          tabBarIcon: ({ color }) => <AntDesign name="search1" color={color} size={28} />,
         }}
       />
       <BottomTab.Screen
         name="Your Library"
-        component={TabTwoNavigator}
+        component={TabThreeNavigator}
         options={{
-          tabBarIcon: ({ color }) => <MaterialIcons name="my-library-music" color={color} size={30} style={{ marginBottom: -3 }} />,
+          tabBarIcon: ({ color }) => <MaterialIcons name="my-library-music" color={color} size={28} />,
         }}
       />
       <BottomTab.Screen
         name="Premium"
         component={TabTwoNavigator}
         options={{
-          tabBarIcon: ({ color }) => <FontAwesome5 name="spotify" color={color} size={30} style={{ marginBottom: -3 }} />,
+          tabBarIcon: ({ color }) => <FontAwesome5 name="spotify" color={color} size={28} />,
         }}
       />
     </BottomTab.Navigator>
   );
-}
-
-function TabBarIcon(props: { name: React.ComponentProps<typeof Ionicons>['name']; color: string }) {
-  return <Ionicons size={30} style={{ marginBottom: -3 }} {...props} />;
 }
 
 const TabOneStack = createStackNavigator<TabOneParamList>();
@@ -67,8 +67,14 @@ function TabOneNavigator() {
     <TabOneStack.Navigator>
       <TabOneStack.Screen
         name="TabOneScreen"
-        component={TabOneScreen}
-        options={{ headerTitle: 'Tab One Title' }}
+        component={Home}
+        options={{ headerTitle: 'Home', headerShown: false }}
+      />
+
+      <TabOneStack.Screen
+        name="AlbumScreen"
+        component={AlbumScreen}
+        options={{ headerTitle: 'Album', headerShown: false }}
       />
     </TabOneStack.Navigator>
   );
@@ -81,9 +87,22 @@ function TabTwoNavigator() {
     <TabTwoStack.Navigator>
       <TabTwoStack.Screen
         name="TabTwoScreen"
-        component={TabTwoScreen}
-        options={{ headerTitle: 'Tab Two Title' }}
+        component={Search}
+        options={{ headerTitle: 'Search', headerShown: false }}
       />
     </TabTwoStack.Navigator>
+  );
+}
+const TabThreeStack = createStackNavigator();
+
+function TabThreeNavigator() {
+  return (
+    <TabThreeStack.Navigator>
+      <TabThreeStack.Screen
+        name="TabThreeScreen"
+        component={Library}
+        options={{ headerTitle: 'Library', headerShown: false }}
+      />
+    </TabThreeStack.Navigator>
   );
 }
